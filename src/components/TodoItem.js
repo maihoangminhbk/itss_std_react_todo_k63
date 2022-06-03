@@ -4,10 +4,14 @@
 　・チェックボックスにチェックが入っているか管理する
 　・チェックボックスにチェックが入っているかアイテムをグレーアウトする
 */
-function TodoItem(  ) {
+import React from 'react';
+
+function TodoItem({item}) {
   return (
     <label className="panel-block">
-    </label>
+            <input type="checkbox" />
+            {item.text}
+        </label>
   );
 }
 
