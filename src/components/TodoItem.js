@@ -15,15 +15,16 @@ function TodoItem({item}) {
   return (
     <>
     { changeColor &&
-    <label className="panel-block has-text-grey-light" onClick={handleChangeColor}>
-             <input type="checkbox" />
+    <label className="panel-block has-text-grey-light">
+             <input type="checkbox" checked={true} onChange={handleChangeColor}/>
+                    
              {item.text}
          </label>
      }
 
     { !changeColor &&
-      <label className="panel-block" onClick={handleChangeColor}>
-              <input type="checkbox" />
+      <label className="panel-block">
+              <input type="checkbox" onChange={handleChangeColor} checked={false}/>
               {item.text}
           </label>
       }
