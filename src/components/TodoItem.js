@@ -6,25 +6,25 @@
 */
 import React, {useState} from 'react';
 
-function TodoItem({item}) {
-  const [changeColor, setChangeColor] = useState(false)
+function TodoItem({item, changeDone}) {
+  // const [changeColor, setChangeColor] = useState(false)
 
   const handleChangeColor = () => {
-    setChangeColor(!changeColor)
+    changeDone(item)
   }
   return (
     <>
-    { changeColor &&
+    { item.done &&
     <label className="panel-block has-text-grey-light">
-             <input type="checkbox" checked={true} onChange={handleChangeColor}/>
+             <input type="checkbox" checked={item.done} onChange={handleChangeColor}/>
                     
              {item.text}
          </label>
      }
 
-    { !changeColor &&
+    { !item.done &&
       <label className="panel-block">
-              <input type="checkbox" onChange={handleChangeColor} checked={false}/>
+              <input type="checkbox" onChange={handleChangeColor} checked={item.done}/>
               {item.text}
           </label>
       }

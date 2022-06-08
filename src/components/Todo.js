@@ -34,6 +34,46 @@ function Todo() {
   // putItems({ key: getKey(), text: 'test', done: false })
 
   // addToItemList({ key: getKey(), text: 'test', done: false })
+  /**
+   * listFilter = All, Inprocess, Complete
+   */
+  const [listFilter, setListFilter] = useState('All')
+
+  const showItem = () => {
+    let filterItems = items
+    if (listFilter === 'Inprocess') {
+      filterItems = items.filter(item => item.done === false)
+    }
+
+    if (listFilter === 'Complete') {
+      filterItems = items.filter(item => item.done === true)
+    }
+
+    return filterItems
+  }
+
+  const changeDone = (item) => {
+
+    var index = items.findIndex(x=> x.key === item.key);
+    if (index === -1)
+      // handle error
+      return
+    else {
+      const itemSet = item
+      itemSet.done = !itemSet.done
+
+      putItems(
+        [
+          ...items.slice(0,index),
+          item,
+          ...items.slice(index+1)
+        ]
+      )
+    }
+      
+    
+  }
+  console.log(items)
 
   return (
     <div className="panel">
@@ -41,14 +81,18 @@ function Todo() {
         ITSS ToDoアプリ
       </div>
       <Input putItem={addToItemList}/>
-      {items.map(item => (
+      <Filter changeFilter={setListFilter}/>
+      {
+        showItem().map(item => (
         <TodoItem
           key={item.key}
           item={item}
+          changeDone={changeDone}
         />
-      ))}
+      ))
+      }
       <div className="panel-block">
-        {items.length} items
+        {showItem().length} items
       </div>
     </div>
   );
