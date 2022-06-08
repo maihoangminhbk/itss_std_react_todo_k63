@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getKey } from "../lib/util";
 
 /* 
   【Storageフック】
@@ -11,23 +12,21 @@ import { useState, useEffect } from 'react';
 
 const STORAGE_KEY = 'itss-todo';
 
-function useStorage() {
-  const [items, setItems] = useState([]);
-　
-　/* 副作用を使う */
-  useEffect(() => {
-    
-  }, []);
-
-  const putItems = items => {
-    
-  };
-
-  const clearItems = () => {
-    
-  };
-
-  return [items, putItems, clearItems];
+const getData = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const initialValue = JSON.parse(saved);
+  return initialValue || [];
 }
 
-export default useStorage;
+const setData = (items) => {
+  console.log(JSON.stringify(items))
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+}
+
+const clearItems = () => {
+  localStorage.removeItem(STORAGE_KEY)
+}
+
+export const useStorage = {
+  getData, setData, clearItems
+}

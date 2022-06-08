@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /* 
   【Todoのデータ構成】
@@ -13,19 +13,44 @@ import Input from './Input';
 import Filter from './Filter';
 
 /* カスタムフック */
-import useStorage from '../hooks/storage';
+import { useStorage } from '../hooks/storage';
 
 /* ライブラリ */
-import {getKey} from "../lib/util";
+import { getKey } from "../lib/util";
+
 
 function Todo() {
-  const [items, putItems] = React.useState([
-      /* テストコード 開始 */
-    { key: getKey(), text: '日本語の宿題', done: false },
-    { key: getKey(), text: 'reactを勉強する', done: false },
-    { key: getKey(), text: '明日の準備をする', done: false },
-    /* テストコード 終了 */
-  ]);
+  const [items, putItems] = React.useState(
+    useStorage.getData()
+  );
+  console.log(useStorage.getData())
+
+  // putItems(useStorage()[0])
+
+  // const GetData = () => {
+  //   console.log('Check')
+  //   console.log(useStorage()[0])
+  //   return useStorage()[0]
+  // }
+
+  useEffect(() => {
+    // storing input name
+    console.log(items)
+    if (items.length !== 0)
+      useStorage.setData(items)
+  }, [items])
+
+  console.log('check')
+  
+
+
+  // useEffect(() => {
+  //   getData()
+  //   putItems([])
+  //   // putItems([])
+  // }, [])
+  // console.log( GetData )
+
 
   const addToItemList = (item) => {
     
@@ -73,7 +98,11 @@ function Todo() {
       
     
   }
-  console.log(items)
+  
+  const deleteData = () => {
+    putItems([])
+    useStorage.clearItems()
+  }
 
   return (
     <div className="panel">
@@ -83,17 +112,21 @@ function Todo() {
       <Input putItem={addToItemList}/>
       <Filter changeFilter={setListFilter}/>
       {
+        showItem().length !== 0 &&
         showItem().map(item => (
-        <TodoItem
-          key={item.key}
-          item={item}
-          changeDone={changeDone}
-        />
+          <TodoItem
+            key={item.key}
+            item={item}
+            changeDone={changeDone}
+          />
       ))
+        
+        
       }
       <div className="panel-block">
         {showItem().length} items
       </div>
+      <button onClick={deleteData}>全てのTODOを削除</button>
     </div>
   );
 }
